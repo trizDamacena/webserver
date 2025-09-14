@@ -64,7 +64,7 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File not found")
         elif self.path == "/listarFilmes": #realizando o get da página index pelo endpoint /listaFilmes 
             try: 
-                f = open(os.path.join(os.getcwd(), "filmes.html"), encoding='utf-8')
+                f = open(os.path.join(os.getcwd(), "listarfilmes.html"), encoding='utf-8')
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()

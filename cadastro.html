@@ -4,8 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
+    <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-    <h1>CADASTRO</h1>
+    <main class="mainCadastro"> 
+        <section class="formulario"> <!--Seção de formulario para alinhamento-->
+            <h2>CADASTRO</h2>
+            <form>
+                <label for="nome_filme">Nome do filme</label>
+                <input type="text" id="nomeFilmes" name="nome_filme" placeholder="Duro de matar"/>
+
+                <label for="atores">Atores</label>
+                <input type="text" id="Atores" name="atores" placeholder="Bruce Willis"/>
+
+                <label for="diretor">Diretor</label>
+                <input type="text" id="Diretor" name="diretor" placeholder="John McTiernan"/>
+
+                <label for="data_lancamento">Data de lançamento</label>
+                <input type="date" id="DataLancamento" name="data_lancamento"/>
+
+                <label for="genero">Genêro</label>
+                <input type="text" id="Genero" name="genero" placeholder="Ação"/>
+
+                <label for="produtora">Produtora</label>
+                <input type="text" id="Produtora" name="produtora" placeholder="20th Century Studios"/>
+
+                <label for="sinopse">Sinopse</label>
+                <textarea name="Sinopse" id="sinopse"></textarea>
+
+                <button>CADASTRAR</button>
+            </form>
+        </section>
+    </main>
 </body>
 </html>

@@ -7,15 +7,20 @@
     <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-    <main>
-        <section class="formulario">
+    <main class="mainFormulario"> 
+        <section class="formulario"> <!--Seção de formulario para alinhamento-->
             <h2>LOGIN</h2>
-            <form action="">
-                <label>Nome de usuário</label>
-                <input/>
+            <form>
+                <label for="nome_usuario">Nome de usuário</label>
+                <input type="text" id="nomeUsuario" name="nome_usuario" placeholder="Beatriz Damacena"/>
 
-                <label>Senha</label>
-                <input/>
+                <label for="senha">Senha</label>
+                <input type="password" id="Senha" name="senha" placeholder="1234"/>
+
+                <label for="esqueci_senha">Esqueci senha</label>
+                <input type="text" id="esqueciaSenha" name="esqueci_senha" placeholder="1234"/>
+
+                <button>ENTRAR</button>
             </form>
         </section>
     </main>

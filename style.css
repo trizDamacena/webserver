@@ -5,6 +5,7 @@
     font-family: "Poppins", sans-serif;
 }
 
+
 .navbar{
     background-color: #4169e1;
     width: 90%;
@@ -45,17 +46,61 @@ header{
 }
 
 
-/*LOGIN*/
-.formulario{
-    width: 50%;
+/*Login*/
+
+.mainFormulario{
+    height: 900px;
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formulario{
+    width: 35%;
+    padding: 2%;
+    display: flex;
+    justify-self: center;
+    align-self: center;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: 5%;
     background-color: #4169e1;
 }
 
 .formulario form{
     display: flex;
     flex-direction: column;
+    justify-self: center;
+    width: 80%;
+}
+
+.formulario form label{
+    margin-top: 15px;
+    margin-bottom: 5px;
+    margin-left: 25%;
+}
+
+.formulario form input{
+    height: 30px;
+    width: 50%;
+    align-self: center;
+}
+
+
+
+.formulario form button{
+    margin-top: 30px;
+    width: 52%;
+    height: 40px;
+    align-self: center;
+}
+
+/*Cadastro*/
+
+.mainCadastro{
+    height: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
