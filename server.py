@@ -15,9 +15,15 @@
 import os 
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
+import pandas as pd
+import json
+
 
 usuario = ""
 senhaUsuario = ""
+vezes = 0
+from pathlib import Path
+caminho_arquivo = Path("./filmes.json")
 
 class Handler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
@@ -44,6 +50,42 @@ class Handler(SimpleHTTPRequestHandler):
             return "Usuário logado"
         else: 
             return "Usuário não encontrado"
+        
+    def register_movie(self, nome, atores, diretor, data_lancamento, genero, produtora, sinopse):
+        self.nome = nome 
+        self.atores = atores
+        self.diretor = diretor
+        self.data_lancamento = data_lancamento
+        self.genero = genero
+        self.produtora = produtora
+        self.sinopse = sinopse
+
+        filme = {
+            "nome": f"{self.nome}",
+            "atores": f"{self.atores}",
+            "diretor": f"{self.diretor}",
+            "data_lancamento": f"{self.data_lancamento}",
+            "genero": f"{self.genero}",
+            "produtora": f"{self.produtora}",
+            "sinopse": f"{self.sinopse}"
+        }
+
+        if caminho_arquivo.exists():
+            with open('filmes.json', 'r', encoding='utf-8') as f:
+                dados = json.load(f)
+            global vezes
+            dados[vezes] = filme
+            vezes+=1
+
+            with open('filmes.json', 'w', encoding='utf-8') as f:
+                json.dump(dados, f, indent=7, ensure_ascii=False) # indent para formatação legível
+            
+            return 'Arquivo atualizado'
+        else:
+            with open('filmes.json', 'w') as file:
+                json.dump(filme, file)
+
+            return 'Arquivo gerado', 
     
     def do_GET(self): #definindo o método get para o endpoint indicados abaixo
         if self.path == "/index": #realizando o get da página index pelo endpoint /index 
@@ -127,10 +169,12 @@ class Handler(SimpleHTTPRequestHandler):
             genero = form_data.get('genero', [""])[0]
             produtora = form_data.get('produtora', [""])[0]
             sinopse = form_data.get('sinopse', [""])[0]
+            sinopsee = form_data.pop
             print(nome_filme)
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
+            logou = self.register_movie(nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
             self.wfile.write(logou.encode("utf-8"))
         else: 
             super(Handler, self).do_POST()

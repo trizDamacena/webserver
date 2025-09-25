@@ -8,9 +8,9 @@
 </head>
 <body>
     <main class="mainCadastro"> 
-        <section class="formulario" action="/send_cadastro" method="POST"> <!--Seção de formulario para alinhamento-->
+        <section class="formulario" > <!--Seção de formulario para alinhamento-->
             <h2>CADASTRO</h2>
-            <form>
+            <form action="/send_cadastro" method="POST">
                 <label for="nome_filme">Nome do filme</label>
                 <input type="text" id="nomeFilmes" name="nome_filme" placeholder="Duro de matar"/>
 
@@ -30,7 +30,7 @@
                 <input type="text" id="Produtora" name="produtora" placeholder="20th Century Studios"/>
 
                 <label for="sinopse">Sinopse</label>
-                <textarea name="Sinopse" id="sinopse"></textarea>
+                <input type="text" id="sinopse" name="sinopse" placeholder="20th Century Studios"/>
 
                 <button>CADASTRAR</button>
             </form>
