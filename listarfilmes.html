@@ -10,7 +10,32 @@
     </ul> 
 
     <script>
-        async function carregarDadosJSON() {
+        const divPrintar = document.querySelector("#meu-container");
+
+        fetch('filmes_teste.json').then((response) =>{
+            return response.json();
+        }).then ((informacoes)=>{
+            informacoes.filmes.map((listagem) =>{
+                divPrintar.innerHTML += `
+                <li>
+                    ${listagem.nome} - 
+                    ${listagem.atores} - 
+                    ${listagem.diretor} - 
+                    ${listagem.data_lancamento} - 
+                    ${listagem.genero} - 
+                    ${listagem.produtora} - 
+                    ${listagem.sinopse}
+
+                </li>
+                `
+            })
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+async function carregarDadosJSON() {
             try {
                 const response = await fetch('./filmes.json'); // Seu arquivo JSON
                 if (!response.ok) {
@@ -39,7 +64,4 @@
         }
 
         // Chama a função para carregar e exibir os dados quando a página carregar
-        document.addEventListener('DOMContentLoaded', carregarDadosJSON);
-    </script>
-</body>
-</html>
+        document.addEventListener('DOMContentLoaded', carregarDadosJSON); -->

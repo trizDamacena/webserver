@@ -1,0 +1,23 @@
+{
+       "filmes": [
+              {
+                     "nome": "Duro de matar 1",
+                     "atores": "Bruce Willis",
+                     "diretor": "asdda",
+                     "data_lancamento": "2025-09-02",
+                     "genero": "sad",
+                     "produtora": "das",
+                     "sinopse": "sASAS"
+              },
+              {
+                     "nome": "Duro de matar 2",
+                     "atores": "Bruce Willis",
+                     "diretor": "asdda",
+                     "data_lancamento": "2025-09-02",
+                     "genero": "sad",
+                     "produtora": "das",
+                     "sinopse": "Sas"
+              }
+
+       ]
+}

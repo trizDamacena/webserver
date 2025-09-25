@@ -15,7 +15,7 @@
 import os 
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs
-import pandas as pd
+# import pandas as pd
 import json
 
 
@@ -74,7 +74,7 @@ class Handler(SimpleHTTPRequestHandler):
             with open('filmes.json', 'r', encoding='utf-8') as f:
                 dados = json.load(f)
             global vezes
-            dados[vezes] = filme
+            dados = filme
             vezes+=1
 
             with open('filmes.json', 'w', encoding='utf-8') as f:
@@ -169,7 +169,6 @@ class Handler(SimpleHTTPRequestHandler):
             genero = form_data.get('genero', [""])[0]
             produtora = form_data.get('produtora', [""])[0]
             sinopse = form_data.get('sinopse', [""])[0]
-            sinopsee = form_data.pop
             print(nome_filme)
             self.send_response(200)
             self.send_header("Content-type", "text/html")
