@@ -73,13 +73,14 @@ class Handler(SimpleHTTPRequestHandler):
         if caminho_arquivo.exists():
             with open('filmes.json', 'r', encoding='utf-8') as f:
                 dados = json.load(f)
+            global vezes
+            dados = filme
+            vezes+=1
+
+            with open('filmes.json', 'w', encoding='utf-8') as f:
+                json.dump(dados, f, indent=7, ensure_ascii=False) # indent para formatação legível
             
-
-            dados["filmes"].append(filme)
-
-            with open('filmes.json', 'w') as file:
-                json.dump(dados, file)
-                
+            return 'Arquivo atualizado'
         else:
             with open('filmes.json', 'w') as file:
                 json.dump(filme, file)
