@@ -71,20 +71,15 @@ class Handler(SimpleHTTPRequestHandler):
         }
 
         if caminho_arquivo.exists():
-            with open('filmes.json', 'r', encoding='utf-8') as f:
+            with open('filmes_teste.json', 'r+', encoding='utf-8') as f:
                 dados = json.load(f)
             
-
-            dados["filmes"].append(filme)
-
-            with open('filmes.json', 'w') as file:
-                json.dump(dados, file)
+                dados["filmes"].append(filme)
+                f.seek(0)
+                json.dump(dados, f, indent=7)
+                f.truncate()
                 
-        else:
-            with open('filmes.json', 'w') as file:
-                json.dump(filme, file)
-
-            return 'Arquivo gerado', 
+        return 'Arquivo gerado'
     
     def do_GET(self): #definindo o método get para o endpoint indicados abaixo
         if self.path == "/index": #realizando o get da página index pelo endpoint /index 
@@ -168,22 +163,23 @@ class Handler(SimpleHTTPRequestHandler):
             genero = form_data.get('genero', [""])[0]
             produtora = form_data.get('produtora', [""])[0]
             sinopse = form_data.get('sinopse', [""])[0]
-            print(nome_filme)
+
+            cadastro = self.register_movie(nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
+            
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            logou = self.register_movie(nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
-            self.wfile.write(logou.encode("utf-8"))
+            self.wfile.write(cadastro.encode("utf-8"))
         else: 
             super(Handler, self).do_POST()
 
-porta = 8000 # definindo a porta
+porta = 8002 # definindo a porta
 Hanlder = (f'http://localhost:{porta}') #definindo o endpoint 
 
 def main(): #função main responsável por chamar a classe dos endpoint
-    server_adress = ('', 8000)
+    server_adress = ('', 8002)
     httpd = HTTPServer(server_adress, Handler)
-    print("Server running in http://localhost:8000")
+    print("Server running in http://localhost:8002")
     httpd.serve_forever()
 
 main()

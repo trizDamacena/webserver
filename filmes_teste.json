@@ -1,23 +1,23 @@
 {
        "filmes": [
               {
-                     "nome": "Duro de matar 1",
-                     "atores": "Bruce Willis",
-                     "diretor": "asdda",
-                     "data_lancamento": "2025-09-02",
-                     "genero": "sad",
-                     "produtora": "das",
-                     "sinopse": "sASAS"
-              },
-              {
-                     "nome": "Duro de matar 2",
-                     "atores": "Bruce Willis",
-                     "diretor": "asdda",
-                     "data_lancamento": "2025-09-02",
-                     "genero": "sad",
-                     "produtora": "das",
-                     "sinopse": "Sas"
-              }
+                "nome": "Duro de Matar",
+                "atores": ["Bruce Willis", "Alan Rickman", "Bonnie Bedelia"],
+                "diretor": "John McTiernan",
+                "data_lancamento": "1988-07-15",
+                "genero": ["Ação", "Suspense"],
+                "produtora": "20th Century Fox",
+                "sinopse": "O policial John McClane tenta salvar sua esposa e outras pessoas que foram feitas reféns por terroristas durante uma festa de Natal em um arranha-céu em Los Angeles."
+            },
 
+              {
+                "nome": "Duro de Matar 2",
+                "atores": ["Bruce Willis", "Bonnie Bedelia", "William Sadler"],
+                "diretor": "Renny Harlin",
+                "data_lancamento": "1990-07-04",
+                "genero": ["Ação", "Suspense"],
+                "produtora": "20th Century Fox",
+                "sinopse": "John McClane enfrenta terroristas que sequestram o controle do aeroporto internacional onde seu avião está para pousar, tentando impedir que eles realizem um plano perigoso."
+              }
        ]
 }
