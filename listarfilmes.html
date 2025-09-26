@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Exibir JSON no HTML</title>
+    <script src="./script.js" defer></script>
 </head>
 <body>
     <h1>Dados do JSON</h1>
@@ -9,14 +10,14 @@
         <!-- Os dados do JSON serão inseridos aqui -->
     </ul> 
 
-    <script>
+    <!-- <script>
         const divPrintar = document.querySelector("#meu-container");
 
         fetch('filmes_teste.json').then((response) =>{
             return response.json();
         }).then ((informacoes)=>{
             informacoes.filmes.map((listagem) =>{
-                divPrintar.innerHTML += `
+                divPrintar.innerHTML += ` 
                 <li>
                     <strong>Nome do filme:</strong> ${listagem.nome} - </br>
                     <strong>Atores: </strong>${listagem.atores} - </br>
@@ -30,38 +31,6 @@
                 `
             })
         })
-    </script>
+    </script> -->
 </body>
 </html>
-
-<!-- 
-async function carregarDadosJSON() {
-            try {
-                const response = await fetch('./filmes.json'); // Seu arquivo JSON
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP! Status: ${response.status}`);
-                }
-                const dados = await response.json();
-                exibirDados(dados);
-            } catch (error) {
-                console.error('Erro ao carregar ou exibir o JSON:', error);
-            }
-        }
-
-        function exibirDados(dados) {
-            const container = document.getElementById('meu-container');
-            if (!container) {
-                console.error('Elemento com id "meu-container" não encontrado.');
-                return;
-            }
-
-            const listaHTML = dados.map(item => {
-                // Crie o HTML para cada item do seu JSON aqui
-                return `<li>${item.nome} - ${item.email}</li>`; // Adapte conforme a estrutura do seu JSON
-            });
-
-            container.innerHTML = listaHTML.join(''); // Use innerHTML para substituir o conteúdo
-        }
-
-        // Chama a função para carregar e exibir os dados quando a página carregar
-        document.addEventListener('DOMContentLoaded', carregarDadosJSON); -->

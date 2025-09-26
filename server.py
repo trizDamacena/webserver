@@ -50,6 +50,7 @@ class Handler(SimpleHTTPRequestHandler):
             return "Usuário logado"
         else: 
             return "Usuário não encontrado"
+    
         
     def register_movie(self, nome, atores, diretor, data_lancamento, genero, produtora, sinopse):
         self.nome = nome 
@@ -81,6 +82,18 @@ class Handler(SimpleHTTPRequestHandler):
                 
         return 'Arquivo gerado'
     
+    def deletar_filme(self, id_filme):
+        self.id_filme = id_filme
+
+        with open('filmes_teste.json', 'r', encoding='utf-8') as f:
+            dados = json.load(f)
+        dados_atualizados = [obj for obj in dados if obj['id'] != self.id_filme]
+
+        with open('filmes_teste.json', 'w') as f:
+            json.dump(dados_atualizados, f, indent=4)
+
+    
+    ##Métodos
     def do_GET(self): #definindo o método get para o endpoint indicados abaixo
         if self.path == "/index": #realizando o get da página index pelo endpoint /index 
             try:
@@ -114,9 +127,39 @@ class Handler(SimpleHTTPRequestHandler):
                 self.wfile.write(content.encode('utf-8'))
             except FileExistsError:
                 self.send_error(404, "File not found")
+
         elif self.path == "/listarFilmes": #realizando o get da página index pelo endpoint /listaFilmes 
             try: 
                 f = open(os.path.join(os.getcwd(), "listarfilmes.html"), encoding='utf-8')
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+                self.wfile.write(f.read().encode('utf-8'))
+                f.close()
+                return None
+            except FileExistsError:
+                self.send_error(404, "File Not Found")
+
+        elif self.path == "/get_listinha":
+            arquivo = "filmes_teste.json"
+
+            if os.path.exists(arquivo):
+                with open(arquivo, encoding="utf-8") as listagem:
+                    try:
+                        filmes = json.load(listagem)
+                    except json.JSONDecodeError:
+                        filmes = []
+            else:
+                filmes = []
+            
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps(filmes).encode("utf-8"))
+        
+        elif self.path == "/deletar_Filmes": #realizando o get da página index pelo endpoint /listaFilmes 
+            try: 
+                f = open(os.path.join(os.getcwd(), "deletarFilme.html"), encoding='utf-8')
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
@@ -170,8 +213,17 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html")
             self.end_headers()
             self.wfile.write(cadastro.encode("utf-8"))
+
         else: 
             super(Handler, self).do_POST()
+        
+    def do_DELETE(self):
+            content_length = int(self.headers['Content-length'])
+            body = self.rfile.read(content_length).decode('utf-8')
+            form_data = parse_qs(body)
+
+            id
+
 
 porta = 8002 # definindo a porta
 Hanlder = (f'http://localhost:{porta}') #definindo o endpoint 
