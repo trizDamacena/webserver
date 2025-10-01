@@ -1,47 +1,38 @@
 {
-       "0": {
-              "nome": "Duro de matar",
-              "atores": "Bruce",
-              "diretor": "John",
-              "data_lancamento": "2025-10-03",
-              "genero": "A\u00e7\u00e3o",
-              "produtora": "20th",
-              "sinopse": "20th"
-       },
-       "1": {
-              "nome": "Duro de matar",
-              "atores": "Bruce",
-              "diretor": "John",
-              "data_lancamento": "2025-10-03",
-              "genero": "A\u00e7\u00e3o",
-              "produtora": "20th",
-              "sinopse": "20th"
-       },
-       "3": {
-              "nome": "Duro de matar ",
-              "atores": "wq",
-              "diretor": "qw",
-              "data_lancamento": "",
-              "genero": "qw",
-              "produtora": "qw",
-              "sinopse": "qw"
-       },
-       "4": {
-              "nome": "Duro de matar ",
-              "atores": "wq",
-              "diretor": "qw",
-              "data_lancamento": "",
-              "genero": "qw",
-              "produtora": "qw",
-              "sinopse": "qw"
-       },
-       "5": {
-              "nome": "Demon Slayer",
-              "atores": "Tanjiro",
-              "diretor": "Kamado",
-              "data_lancamento": "2025-10-16",
-              "genero": "as",
-              "produtora": "as",
-              "sinopse": "as"
-       }
+    "0": {
+        "nome": "Duro de matar",
+        "atores": "Bruce",
+        "diretor": "John",
+        "data_lancamento": "2025-10-03",
+        "genero": "Ação",
+        "produtora": "20th",
+        "sinopse": "20th"
+    },
+    "1": {
+        "nome": "Duro de matar",
+        "atores": "Bruce",
+        "diretor": "John",
+        "data_lancamento": "2025-10-03",
+        "genero": "Ação",
+        "produtora": "20th",
+        "sinopse": "20th"
+    },
+    "4": {
+        "nome": "Duro de matar ",
+        "atores": "wq",
+        "diretor": "qw",
+        "data_lancamento": "",
+        "genero": "qw",
+        "produtora": "qw",
+        "sinopse": "qw"
+    },
+    "5": {
+        "nome": "Demon Slayer",
+        "atores": "Tanjiro",
+        "diretor": "Kamado",
+        "data_lancamento": "2025-10-16",
+        "genero": "as",
+        "produtora": "as",
+        "sinopse": "as"
+    }
 }

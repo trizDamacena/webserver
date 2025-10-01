@@ -217,50 +217,21 @@ class Handler(SimpleHTTPRequestHandler):
             super(Handler, self).do_POST()
         
     def do_DELETE(self):
-        # print("PRimeiro")
-        # path = urlparse(self.path).path
         
-        # if not path.startswith('/delete/'):
-        #     self.send_error(404, "Caminho DELETE inválido. Use /delete/<ID>.")
-        #     return
+        url = urlparse(self.path)
+        separado = [parte for parte in url.path.split('/') if parte]
+        id = separado[-1]
 
-        # id_para_excluir = path.split('/')[-1]
-        # print("aqui")
+        with open('./jsons/filmes.json', 'r', encoding='utf-8') as f:
+            dados = json.load(f)
 
-        # try:
-        #         # 2. Abrir o arquivo no modo 'r+' (leitura e escrita)
-        #     with open('./jsons/filmes.json', 'r+', encoding='utf-8') as f:
-                    
-        #             # Carrega o JSON em um dicionário Python
-        #         dados = json.load(f)
-                    
-        #         if id_para_excluir in dados:
-        #                 # 3. Excluir o item do dicionário
-        #             filme_excluido = dados.pop(id_para_excluir)
-                        
-        #                 # 4. Preparar o arquivo para reescrita
-        #             f.seek(0)  # Move o cursor para o início do arquivo
-        #             f.truncate() # Remove o conteúdo antigo (a partir da posição do cursor, que é 0)
-                        
-        #                 # 5. Escrever o novo conteúdo modificado
-        #             json.dump(dados, f, ensure_ascii=False, indent=4)
-                        
-        #                 # 6. Enviar resposta de sucesso HTTP
-        #             self.send_response(204) # 204 No Content é o padrão para DELETE bem-sucedido
-        #             self.end_headers()
-        #             print(f"✅ Filme excluído: ID '{id_para_excluir}' - {filme_excluido.get('nome', 'Sem Nome')}")
-                    
-        #         else:
-        #                 # ID não encontrado
-        #             self.send_error(404, f"ID '{id_para_excluir}' não encontrado no JSON.")
-        # except FileNotFoundError:
-        #     self.send_error(404, f"Arquivo JSON não encontrado")
-        # except json.JSONDecodeError:
-        #     self.send_error(500, f"Erro ao decodificar o JSON no arquivo")
-        # except Exception as e:
-        #     self.send_error(500, f"Erro interno do servidor: {e}")
-        pass
+        del dados[id]
+        with open('./jsons/filmes.json', 'w', encoding='utf-8') as f:
+            json.dump(dados, f, indent=4, ensure_ascii=False)
+        self.send_response(204)  
+        self.end_headers()
 
+        return None
 
 
 
