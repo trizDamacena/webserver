@@ -27,7 +27,7 @@ caminho_arquivo = Path("./filmes.json")
 class Handler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
         try:
-            f = open(os.path.join(path, 'index.html'), encoding='utf-8')
+            f = open(os.path.join(path, './html/index.html'), encoding='utf-8')
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
@@ -51,7 +51,8 @@ class Handler(SimpleHTTPRequestHandler):
             return "Usuário não encontrado"
     
         
-    def register_movie(self, nome, atores, diretor, data_lancamento, genero, produtora, sinopse):
+    def register_movie(self, id_filme, nome, atores, diretor, data_lancamento, genero, produtora, sinopse):
+        self.id_filme = id_filme
         self.nome = nome 
         self.atores = atores
         self.diretor = diretor
@@ -70,16 +71,32 @@ class Handler(SimpleHTTPRequestHandler):
             "sinopse": f"{self.sinopse}"
         }
 
+
         if caminho_arquivo.exists():
             with open('./jsons/filmes.json', 'r+', encoding='utf-8') as f:
                 dados = json.load(f)
                 
-                dados[len(dados)+1] = filme
+                if self.id_filme == None:
+                    if str(len(dados)+1) in dados:
+                        dados[len(dados)+2] = filme
+                    else:
+                        dados[len(dados)+1] = filme
+                else:
+                    dados[id_filme]['nome'] = self.nome
+                    dados[id_filme]['atores'] = self.atores
+                    dados[id_filme]['diretor'] = self.diretor
+                    dados[id_filme]['data_lancamento'] = self.data_lancamento
+                    dados[id_filme]['genero'] = self.genero
+                    dados[id_filme]['produtora'] = self.produtora
+                    dados[id_filme]['sinopse'] = self.sinopse
                 f.seek(0)
-                json.dump(dados, f, indent=7)
+                json.dump(dados, f, indent=4)
                 f.truncate()
+            return 'Arquivo gerado'
+        else:
+            return 'Arquivo não encotrado'
                 
-        return 'Arquivo gerado'
+        
     
     def deletar_filme(self, id_filme):
         self.id_filme = id_filme
@@ -96,7 +113,7 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self): #definindo o método get para o endpoint indicados abaixo
         if self.path == "/index": #realizando o get da página index pelo endpoint /index 
             try:
-                with open(os.path.join(os.getcwd(), "index.html"), encoding='utf-8') as index:
+                with open(os.path.join(os.getcwd(), "./html/index.html"), encoding='utf-8') as index:
                     content = index.read()
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
@@ -107,7 +124,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         elif self.path == "/login": #realizando o get da página index pelo endpoint /login 
             try:
-                with open(os.path.join(os.getcwd(), "login.html"), encoding='utf-8') as login:
+                with open(os.path.join(os.getcwd(), "./html/login.html"), encoding='utf-8') as login:
                     content = login.read()
                 self.send_response(200)
                 self.send_header("Content-type", 'text/html')
@@ -118,7 +135,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         elif self.path == "/cadastro": #realizando o get da página index pelo endpoint /cadastro 
             try:
-                with open(os.path.join(os.getcwd(), "cadastro.html"), encoding='utf-8') as cadastro:
+                with open(os.path.join(os.getcwd(), "./html/cadastro.html"), encoding='utf-8') as cadastro:
                     content = cadastro.read()
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
@@ -129,7 +146,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         elif self.path == "/listarFilmes": #realizando o get da página index pelo endpoint /listaFilmes 
             try: 
-                f = open(os.path.join(os.getcwd(), "listarfilmes.html"), encoding='utf-8')
+                f = open(os.path.join(os.getcwd(), "./html/listarfilmes.html"), encoding='utf-8')
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
@@ -155,18 +172,31 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_header("Content-type", "application/json")
             self.end_headers()
             self.wfile.write(json.dumps(filmes).encode('utf-8'))
-        
-        elif self.path == "/deletar_Filmes": #realizando o get da página index pelo endpoint /listaFilmes 
-            try: 
-                f = open(os.path.join(os.getcwd(), "deletarFilme.html"), encoding='utf-8')
+
+        elif self.path == "/atualizar": #realizando o get da página index pelo endpoint /cadastro 
+            try:
+                with open(os.path.join(os.getcwd(), "./html/atualizarFilme.html"), encoding='utf-8') as cadastro:
+                    content = cadastro.read()
                 self.send_response(200)
                 self.send_header("Content-type", "text/html")
                 self.end_headers()
-                self.wfile.write(f.read().encode('utf-8'))
-                f.close()
-                return None
+                self.wfile.write(content.encode('utf-8'))
             except FileExistsError:
-                self.send_error(404, "File Not Found")
+                self.send_error(404, "File not found")
+        
+
+        #PROVAVELMENTE NÃO IREI USAR
+        # elif self.path == "/deletar_Filmes": #realizando o get da página index pelo endpoint /listaFilmes 
+        #     try: 
+        #         f = open(os.path.join(os.getcwd(), "deletarFilme.html"), encoding='utf-8')
+        #         self.send_response(200)
+        #         self.send_header("Content-type", "text/html")
+        #         self.end_headers()
+        #         self.wfile.write(f.read().encode('utf-8'))
+        #         f.close()
+        #         return None
+        #     except FileExistsError:
+        #         self.send_error(404, "File Not Found")
         else:
             super().do_GET()
     
@@ -198,6 +228,7 @@ class Handler(SimpleHTTPRequestHandler):
             form_data = parse_qs(body)
 
             print("Data frame: ")
+            id_filme = None
             nome_filme = form_data.get('nome_filme', [""])[0]
             atores = form_data.get('atores', [""])[0]
             diretor = form_data.get('diretor', [""])[0]
@@ -206,7 +237,30 @@ class Handler(SimpleHTTPRequestHandler):
             produtora = form_data.get('produtora', [""])[0]
             sinopse = form_data.get('sinopse', [""])[0]
 
-            cadastro = self.register_movie(nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
+            cadastro = self.register_movie(id_filme, nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
+            
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(cadastro.encode('utf-8'))
+
+        elif (self.path == '/send_atualizar'):
+            content_length = int(self.headers['Content-length'])
+            body = self.rfile.read(content_length).decode('utf-8')
+            form_data = parse_qs(body)
+
+            print("Data frame: ")
+            id_filme = form_data.get('id_filme', [""])[0]
+            post_ou_put = 1
+            nome_filme = form_data.get('nome_filme', [""])[0]
+            atores = form_data.get('atores', [""])[0]
+            diretor = form_data.get('diretor', [""])[0]
+            data_lancamento = form_data.get('data_lancamento', [""])[0]
+            genero = form_data.get('genero', [""])[0]
+            produtora = form_data.get('produtora', [""])[0]
+            sinopse = form_data.get('sinopse', [""])[0]
+
+            cadastro = self.register_movie(id_filme, nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
             
             self.send_response(200)
             self.send_header("Content-type", "text/html")

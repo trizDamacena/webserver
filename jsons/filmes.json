@@ -1,19 +1,19 @@
 {
     "0": {
-        "nome": "Duro de matar",
-        "atores": "Bruce",
-        "diretor": "John",
-        "data_lancamento": "2025-10-03",
-        "genero": "Ação",
-        "produtora": "20th",
-        "sinopse": "20th"
+        "nome": "Vingadores",
+        "atores": "Chris Evans",
+        "diretor": "Kevin Feight",
+        "data_lancamento": "2012-06-11",
+        "genero": "A\u00e7\u00e3o",
+        "produtora": "Marvel Studio",
+        "sinopse": "Herois matando ET\u00b4s"
     },
     "1": {
         "nome": "Duro de matar",
         "atores": "Bruce",
         "diretor": "John",
         "data_lancamento": "2025-10-03",
-        "genero": "Ação",
+        "genero": "A\u00e7\u00e3o",
         "produtora": "20th",
         "sinopse": "20th"
     },
@@ -34,5 +34,14 @@
         "genero": "as",
         "produtora": "as",
         "sinopse": "as"
+    },
+    "6": {
+        "nome": "Bea",
+        "atores": "Bea",
+        "diretor": "Bea",
+        "data_lancamento": "2025-10-14",
+        "genero": "Bea",
+        "produtora": "Bea",
+        "sinopse": "Bea"
     }
 }
