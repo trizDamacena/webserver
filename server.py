@@ -14,8 +14,7 @@
 
 import os 
 from http.server import SimpleHTTPRequestHandler, HTTPServer
-from urllib.parse import parse_qs
-# import pandas as pd
+from urllib.parse import parse_qs, urlparse
 import json
 
 
@@ -72,10 +71,10 @@ class Handler(SimpleHTTPRequestHandler):
         }
 
         if caminho_arquivo.exists():
-            with open('filmes_teste.json', 'r+', encoding='utf-8') as f:
+            with open('./jsons/filmes.json', 'r+', encoding='utf-8') as f:
                 dados = json.load(f)
-            
-                dados["filmes"].append(filme)
+                
+                dados[len(dados)+1] = filme
                 f.seek(0)
                 json.dump(dados, f, indent=7)
                 f.truncate()
@@ -141,10 +140,10 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File Not Found")
 
         elif self.path == "/get_listinha":
-            arquivo = "filmes_teste.json"
+            arquivo = "./jsons/filmes.json"
 
             if os.path.exists(arquivo):
-                with open(arquivo, encoding="utf-8") as listagem:
+                with open(arquivo, encoding='utf-8') as listagem:
                     try:
                         filmes = json.load(listagem)
                     except json.JSONDecodeError:
@@ -155,7 +154,7 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(json.dumps(filmes).encode("utf-8"))
+            self.wfile.write(json.dumps(filmes).encode('utf-8'))
         
         elif self.path == "/deletar_Filmes": #realizando o get da página index pelo endpoint /listaFilmes 
             try: 
@@ -212,17 +211,57 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(cadastro.encode("utf-8"))
+            self.wfile.write(cadastro.encode('utf-8'))
 
         else: 
             super(Handler, self).do_POST()
         
     def do_DELETE(self):
-            content_length = int(self.headers['Content-length'])
-            body = self.rfile.read(content_length).decode('utf-8')
-            form_data = parse_qs(body)
+        # print("PRimeiro")
+        # path = urlparse(self.path).path
+        
+        # if not path.startswith('/delete/'):
+        #     self.send_error(404, "Caminho DELETE inválido. Use /delete/<ID>.")
+        #     return
 
-            id
+        # id_para_excluir = path.split('/')[-1]
+        # print("aqui")
+
+        # try:
+        #         # 2. Abrir o arquivo no modo 'r+' (leitura e escrita)
+        #     with open('./jsons/filmes.json', 'r+', encoding='utf-8') as f:
+                    
+        #             # Carrega o JSON em um dicionário Python
+        #         dados = json.load(f)
+                    
+        #         if id_para_excluir in dados:
+        #                 # 3. Excluir o item do dicionário
+        #             filme_excluido = dados.pop(id_para_excluir)
+                        
+        #                 # 4. Preparar o arquivo para reescrita
+        #             f.seek(0)  # Move o cursor para o início do arquivo
+        #             f.truncate() # Remove o conteúdo antigo (a partir da posição do cursor, que é 0)
+                        
+        #                 # 5. Escrever o novo conteúdo modificado
+        #             json.dump(dados, f, ensure_ascii=False, indent=4)
+                        
+        #                 # 6. Enviar resposta de sucesso HTTP
+        #             self.send_response(204) # 204 No Content é o padrão para DELETE bem-sucedido
+        #             self.end_headers()
+        #             print(f"✅ Filme excluído: ID '{id_para_excluir}' - {filme_excluido.get('nome', 'Sem Nome')}")
+                    
+        #         else:
+        #                 # ID não encontrado
+        #             self.send_error(404, f"ID '{id_para_excluir}' não encontrado no JSON.")
+        # except FileNotFoundError:
+        #     self.send_error(404, f"Arquivo JSON não encontrado")
+        # except json.JSONDecodeError:
+        #     self.send_error(500, f"Erro ao decodificar o JSON no arquivo")
+        # except Exception as e:
+        #     self.send_error(500, f"Erro interno do servidor: {e}")
+        pass
+
+
 
 
 porta = 8002 # definindo a porta

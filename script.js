@@ -3,7 +3,7 @@ const lis = document.getElementById('meu-container')
 fetch('http://localhost:8002/get_listinha').then((response) => {
     return response.json();
 }).then((data) => {
-    data.filmes.map((listagem) => {
+    Object.values(data).map((listagem) => {
         console.log(listagem)
         lis.innerHTML +=`
         <li>
@@ -18,3 +18,6 @@ fetch('http://localhost:8002/get_listinha').then((response) => {
         `
     })
 })
+
+
+
