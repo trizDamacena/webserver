@@ -16,13 +16,19 @@ import os
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
 import json
-
+import mysql.connector
 
 usuario = ""
 senhaUsuario = ""
 vezes = 0
 from pathlib import Path
 caminho_arquivo = Path("./filmes.json")
+
+mydb = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "senai"
+    )
 
 class Handler(SimpleHTTPRequestHandler):
     def list_directory(self, path):
@@ -37,6 +43,22 @@ class Handler(SimpleHTTPRequestHandler):
         except FileNotFoundError:
             pass 
         return super().list_directory(path)
+    
+    def loading_filmes(self):
+        cursor = mydb.cursor()
+
+        cursor.execute("SELECT * FROM bd_filmes.filme")
+        result = cursor.fetchall()
+
+
+        for res in result:
+            id_filmes = res[0]
+            filme = res[1]
+            orcamento = res[2]
+            tempo_duracao = res[3]
+            ano = res[4]
+            poster = res[5]
+            print(id_filmes, filme, orcamento, tempo_duracao, ano, poster)
     
     def accont_user(self, login, senhaa):
         self.login = login
@@ -111,6 +133,7 @@ class Handler(SimpleHTTPRequestHandler):
     
     ##Métodos
     def do_GET(self): #definindo o método get para o endpoint indicados abaixo
+        
         if self.path == "/index": #realizando o get da página index pelo endpoint /index 
             try:
                 with open(os.path.join(os.getcwd(), "./html/index.html"), encoding='utf-8') as index:
@@ -145,6 +168,7 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File not found")
 
         elif self.path == "/listarFilmes": #realizando o get da página index pelo endpoint /listaFilmes 
+            
             try: 
                 f = open(os.path.join(os.getcwd(), "./html/listarfilmes.html"), encoding='utf-8')
                 self.send_response(200)
@@ -183,20 +207,7 @@ class Handler(SimpleHTTPRequestHandler):
                 self.wfile.write(content.encode('utf-8'))
             except FileExistsError:
                 self.send_error(404, "File not found")
-        
 
-        #PROVAVELMENTE NÃO IREI USAR
-        # elif self.path == "/deletar_Filmes": #realizando o get da página index pelo endpoint /listaFilmes 
-        #     try: 
-        #         f = open(os.path.join(os.getcwd(), "deletarFilme.html"), encoding='utf-8')
-        #         self.send_response(200)
-        #         self.send_header("Content-type", "text/html")
-        #         self.end_headers()
-        #         self.wfile.write(f.read().encode('utf-8'))
-        #         f.close()
-        #         return None
-        #     except FileExistsError:
-        #         self.send_error(404, "File Not Found")
         else:
             super().do_GET()
     
