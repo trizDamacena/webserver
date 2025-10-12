@@ -27,7 +27,7 @@ caminho_arquivo = Path("./filmes.json")
 mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    password = "senai"
+    password = "Aluno0."
     )
 
 class Handler(SimpleHTTPRequestHandler):
@@ -50,15 +50,32 @@ class Handler(SimpleHTTPRequestHandler):
         cursor.execute("SELECT * FROM bd_filmes.filme")
         result = cursor.fetchall()
 
-
+        filmes = []
         for res in result:
             id_filmes = res[0]
             filme = res[1]
             orcamento = res[2]
+
             tempo_duracao = res[3]
+            try:
+                tempo_duracao = int(tempo_duracao.total_seconds() // 60)  # transforma timedelta em minutos
+            except:
+                tempo_duracao = str(tempo_duracao)
+
             ano = res[4]
             poster = res[5]
             print(id_filmes, filme, orcamento, tempo_duracao, ano, poster)
+
+            filmes.append({
+                "id": res[0],
+                "titulo": res[1],
+                "orcamento": res[2],
+                "duracao": res[3],
+                "ano": res[4],
+                "poster": res[5],
+            })
+        return filmes
+
     
     def accont_user(self, login, senhaa):
         self.login = login
@@ -181,21 +198,14 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_error(404, "File Not Found")
 
         elif self.path == "/get_listinha":
-            arquivo = "./jsons/filmes.json"
-
-            if os.path.exists(arquivo):
-                with open(arquivo, encoding='utf-8') as listagem:
-                    try:
-                        filmes = json.load(listagem)
-                    except json.JSONDecodeError:
-                        filmes = []
-            else:
-                filmes = []
+            print("RODANDO E TESTANDO CONEXÂO")
+            filmes = self.loading_filmes()
+            print(filmes)
             
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
-            self.wfile.write(json.dumps(filmes).encode('utf-8'))
+            self.wfile.write(json.dumps(filmes, default=str).encode('utf-8'))
 
         elif self.path == "/atualizar": #realizando o get da página index pelo endpoint /cadastro 
             try:
