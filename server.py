@@ -1,17 +1,3 @@
-# from http.server import SimpleHTTPRequestHandler, HTTPServer
-
-# #definir a porta
-# porta = 8000
-
-# #definindo o gerenciador/manipulador de requisições
-# handler = SimpleHTTPRequestHandler
-
-# #criando a instância com o servidor
-# server = HTTPServer(('localhost',porta), handler)
-# #Imprimindo mensagem de status
-# print(f"Server Initiated in http://localhost:{porta}")
-# server.serve_forever()
-
 import os 
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
@@ -27,7 +13,7 @@ caminho_arquivo = Path("./filmes.json")
 mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    password = "Aluno0."
+    password = "senai"
     )
 
 class Handler(SimpleHTTPRequestHandler):
@@ -76,7 +62,22 @@ class Handler(SimpleHTTPRequestHandler):
             })
         return filmes
 
-    
+    def insert_filmes(self, titulo, orcamento, tempo_duracao, ano, poster ):
+        cursor = mydb.cursor()
+
+        cursor.execute("INSERT INTO bd_filmes.filme(titulo, orcamento, tempo_duracao, ano, poster) VALUES (%s, %s, %s, %s, %s)", (titulo, orcamento, tempo_duracao, ano, poster)), 
+        cursor.execute("SELECT id FROM bd_filmes.filme WHERE titulo = %s", (titulo,))
+        resultado = cursor.fetchall()
+        print(resultado)
+        cursor.execute("SELECT * FROM bd_filmes.filme WHERE id = %s", (resultado[0][0], ))
+        resultado = cursor.fetchall()
+        print(resultado)
+        
+        cursor.close()
+        mydb.commit()
+
+        return resultado
+
     def accont_user(self, login, senhaa):
         self.login = login
         self.senhaa = senhaa
@@ -248,22 +249,31 @@ class Handler(SimpleHTTPRequestHandler):
             body = self.rfile.read(content_length).decode('utf-8')
             form_data = parse_qs(body)
 
-            print("Data frame: ")
-            id_filme = None
-            nome_filme = form_data.get('nome_filme', [""])[0]
-            atores = form_data.get('atores', [""])[0]
-            diretor = form_data.get('diretor', [""])[0]
-            data_lancamento = form_data.get('data_lancamento', [""])[0]
-            genero = form_data.get('genero', [""])[0]
-            produtora = form_data.get('produtora', [""])[0]
-            sinopse = form_data.get('sinopse', [""])[0]
+            titulo = form_data.get('nome_filme', [""])[0]
+            orcamento = float(form_data.get('Orcamento', [""])[0])
+            ano = int(form_data.get('data_lancamento', [""])[0]) 
+            tempo_duracao = form_data.get('Duracao', [""])[0]
+            poster = form_data.get('Poster', [""])[0]
 
-            cadastro = self.register_movie(id_filme, nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
+            responser = self.insert_filmes(titulo, orcamento, tempo_duracao, ano, poster)
+        
+
+            # print("Data frame: ")
+            # id_filme = None
+            # nome_filme = form_data.get('nome_filme', [""])[0]
+            # atores = form_data.get('atores', [""])[0]
+            # diretor = form_data.get('diretor', [""])[0]
+            # data_lancamento = form_data.get('data_lancamento', [""])[0]
+            # genero = form_data.get('genero', [""])[0]
+            # produtora = form_data.get('produtora', [""])[0]
+            # sinopse = form_data.get('sinopse', [""])[0]
+
+            # cadastro = self.register_movie(id_filme, nome_filme, atores, diretor, data_lancamento, genero, produtora, sinopse)
             
             self.send_response(200)
             self.send_header("Content-type", "text/html")
             self.end_headers()
-            self.wfile.write(cadastro.encode('utf-8'))
+            self.wfile.write(json.dumps(responser).encode('utf-8'))
 
         elif (self.path == '/send_atualizar'):
             content_length = int(self.headers['Content-length'])

@@ -9,11 +9,11 @@ fetch('http://localhost:8002/get_listinha')
     filmes.forEach(filme =>{
         lis.innerHTML +=`
         <li>
-            <strong>Nome do filme:</strong> ${filme.titulo} - </br>
-            <strong>Orçamento: </strong>${filme.orcamento} - </br>
+            <img src="${filme.poster}" alt="Poster do filme ${filme.titulo}" style="max-width:200px; height:auto;" />
+            <p><strong>Nome do filme:</strong> ${filme.titulo} </p> </br>
+            <p><strong>Orçamento: </strong>${filme.orcamento}</p> - </br>
             <strong>Duração: </strong>${filme.duracao} </br> 
             <strong>Data de lançamento:</strong>${filme.ano} - </br>
-            <img src="${filme.poster}" alt="Poster do filme ${filme.titulo}" style="max-width:200px; height:auto;" />
         </li>
         `
     })
