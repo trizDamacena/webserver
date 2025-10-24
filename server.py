@@ -64,19 +64,25 @@ class Handler(SimpleHTTPRequestHandler):
 
     def insert_filmes(self, titulo, orcamento, tempo_duracao, ano, poster ):
         cursor = mydb.cursor()
-
-        cursor.execute("INSERT INTO bd_filmes.filme(titulo, orcamento, tempo_duracao, ano, poster) VALUES (%s, %s, %s, %s, %s)", (titulo, orcamento, tempo_duracao, ano, poster)), 
         cursor.execute("SELECT id FROM bd_filmes.filme WHERE titulo = %s", (titulo,))
-        resultado = cursor.fetchall()
-        print(resultado)
-        cursor.execute("SELECT * FROM bd_filmes.filme WHERE id = %s", (resultado[0][0], ))
-        resultado = cursor.fetchall()
-        print(resultado)
-        
-        cursor.close()
-        mydb.commit()
+        verificador = cursor.fetchone()
 
-        return resultado
+        if verificador:
+            cursor.close()
+            return "Filme já existe"
+        else:
+            cursor.execute("INSERT INTO bd_filmes.filme(titulo, orcamento, tempo_duracao, ano, poster) VALUES (%s, %s, %s, %s, %s)", (titulo, orcamento, tempo_duracao, ano, poster)), 
+            cursor.execute("SELECT id FROM bd_filmes.filme WHERE titulo = %s", (titulo,))
+            resultado = cursor.fetchall()
+            print(resultado)
+            cursor.execute("SELECT * FROM bd_filmes.filme WHERE id = %s", (resultado[0][0], ))
+            resultado = cursor.fetchall()
+            print(resultado)
+            
+            mydb.commit()
+            cursor.close()
+
+            return resultado
 
     def accont_user(self, login, senhaa):
         self.login = login
